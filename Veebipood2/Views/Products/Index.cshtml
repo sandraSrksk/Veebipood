@@ -1,0 +1,78 @@
+﻿@model PagedResult<Veebipood2.Data.Product>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<p>
+    <form method="get">
+        <div class="col-lg-4">
+            <div class="form-group">
+                <label class="control-label">ProductType</label>
+                <select name="TypeId" value="@this.Context.Request.Query["TypeId"]" class="form-control" asp-items="ViewBag.ProductTypeId">
+                <option>-</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="form-group">
+                <label class="control-label">Item</label>
+                <input type="text" name="Item" value="@this.Context.Request.Query["Item"]" class="form-control" />
+            </div>
+        </div>
+        <p>
+            <button type="submit" class="btn btn-primary">Filter</button> 
+            <button type="reset" class="btn btn-secondary">Clear</button>
+        </p>
+    </form>
+
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                ProductType
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Results)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductType.TypeName)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<vc:pager result="@Model" view-name="Default" />
